@@ -14,3 +14,29 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
+void MainWindow::on_actionNew_triggered()
+{
+    currentFile.clear();
+    ui -> textEdit -> clear();
+}
+
+void MainWindow::on_actionOpen_triggered()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, "Open the file");
+    QFile file(fileName);
+    currentFile = fileName;
+    if(!file.open(QIODevice::ReadOnly | QFile::Text)){
+        QMessageBox::warning(this, "Warning", "Cannot open file : " + file.errorString());
+    }
+    setWindowTitle(fileName);
+    QTextStream in(&file);
+    QString text = in.readAll();
+    ui->textEdit->setText(text);
+    file.close();
+}
+
+void MainWindow::on_actionSave_triggered()
+{
+
+}
